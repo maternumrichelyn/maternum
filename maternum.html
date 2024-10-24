@@ -1,0 +1,194 @@
+<html><head><base href="/" />
+<title>Filipino Name Generator</title>
+<style>
+:root {
+  --primary: #D34E24;  /* Philippine sun color */
+  --secondary: #0038A8; /* Philippine flag blue */
+}
+
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #fff 50%, #CE1126 50%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+h1 {
+  color: var(--primary);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+select {
+  padding: 0.5rem;
+  border: 2px solid var(--secondary);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.result {
+  font-size: 2rem;
+  color: var(--secondary);
+  margin: 2rem 0;
+  min-height: 60px;
+}
+
+.meaning {
+  color: #666;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.sun-loader {
+  display: none;
+  width: 50px;
+  height: 50px;
+  margin: 1rem auto;
+}
+
+.sun-loader.active {
+  display: block;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Filipino Name Generator</h1>
+  <p class="description">Generate authentic Filipino names with their meanings</p>
+  
+  <div class="controls">
+    <select id="gender">
+      <option value="any">Any Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <button onclick="generateName()">Generate Name</button>
+  </div>
+
+  <svg class="sun-loader" viewBox="0 0 100 100">
+    <path fill="#D34E24" d="M50,25 L60,40 L75,35 L65,50 L75,65 L60,60 L50,75 L40,60 L25,65 L35,50 L25,35 L40,40 Z">
+      <animateTransform attributeName="transform"
+        attributeType="XML"
+        type="rotate"
+        from="0 50 50"
+        to="360 50 50"
+        dur="1s"
+        repeatCount="indefinite"/>
+    </path>
+  </svg>
+
+  <div class="result"></div>
+  <div class="meaning"></div>
+</div>
+
+<script>
+const maleFirstNames = [
+  {name: "Agapito", meaning: "Beloved"},
+  {name: "Bayani", meaning: "Hero"},
+  {name: "Crisanto", meaning: "Bearer of Christ"},
+  {name: "Dakila", meaning: "Great, Noble"},
+  {name: "Efren", meaning: "Fruitful"},
+  {name: "Fernando", meaning: "Adventurous"},
+  {name: "Guillermo", meaning: "Resolute Protector"},
+  {name: "Isagani", meaning: "Has Glory"}
+];
+
+const femaleFirstNames = [
+  {name: "Amihan", meaning: "North Wind"},
+  {name: "Bituin", meaning: "Star"},
+  {name: "Cordelia", meaning: "Daughter of the Sea"},
+  {name: "Dalisay", meaning: "Pure"},
+  {name: "Esmeralda", meaning: "Emerald"},
+  {name: "Flordeliza", meaning: "Flower of Liza"},
+  {name: "Hiraya", meaning: "May Your Dreams Come True"},
+  {name: "Imelda", meaning: "All-consuming"}
+];
+
+const lastNames = [
+  {name: "Santos", meaning: "Saints"},
+  {name: "Reyes", meaning: "Kings"},
+  {name: "Cruz", meaning: "Cross"},
+  {name: "Bautista", meaning: "Baptist"},
+  {name: "Mendoza", meaning: "Cold Mountain"},
+  {name: "Del Rosario", meaning: "Of the Rosary"},
+  {name: "Garcia", meaning: "Bear"},
+  {name: "Torres", meaning: "Towers"}
+];
+
+function generateName() {
+  const loader = document.querySelector('.sun-loader');
+  const result = document.querySelector('.result');
+  const meaning = document.querySelector('.meaning');
+  const gender = document.getElementById('gender').value;
+  
+  loader.classList.add('active');
+  result.textContent = '';
+  meaning.textContent = '';
+  
+  setTimeout(() => {
+    let firstName;
+    if (gender === 'male') {
+      firstName = maleFirstNames[Math.floor(Math.random() * maleFirstNames.length)];
+    } else if (gender === 'female') {
+      firstName = femaleFirstNames[Math.floor(Math.random() * femaleFirstNames.length)];
+    } else {
+      const allFirstNames = [...maleFirstNames, ...femaleFirstNames];
+      firstName = allFirstNames[Math.floor(Math.random() * allFirstNames.length)];
+    }
+    
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    
+    result.textContent = `${firstName.name} ${lastName.name}`;
+    meaning.textContent = `Meaning: ${firstName.name} (${firstName.meaning}) ${lastName.name} (${lastName.meaning})`;
+    
+    loader.classList.remove('active');
+  }, 1000);
+}
+</script>
+</body></html>
